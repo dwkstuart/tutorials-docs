@@ -1,5 +1,3 @@
-Below is a comprehensive markdown document for your React + TypeScript CRUD tutorial, including explanations, Java comparisons, mindset shifts, Mermaid diagrams, stubbing/mocking strategies, state management advice, and an appendix on React frameworks.
-
 # React + TypeScript CRUD Application Tutorial  
 *For Java Developers*
 
@@ -22,14 +20,14 @@ cd task-manager
 ```
 
 **Comparison to Java**  
-Unlike Java projects (where you use Gradle or Maven for builds and Spring Boot for server apps), React projects are client-side, focusing on UI and API integration[1].
+Unlike Java projects (where you use Gradle or Maven for builds and Spring Boot for server apps), React projects are client-side, focusing on UI and API integration.
 
 **Mindset Shift**  
 You are building a single-page application (SPA), not a server-rendered app. State and logic live in the browser, not on the server.
 
 **Official Documentation**  
 - [Create React App with TypeScript](https://create-react-app.dev/docs/adding-typescript/)
-- [Vite with React and TypeScript](https://vitejs.dev/guide/)
+- [Vite with React and TypeScript](https://vite.dev/guide/)
 
 ## 2. Project Structure
 
@@ -80,7 +78,7 @@ This is like a Java class but without methods. TypeScript interfaces are for typ
 ```typescript
 const BASE_URL = 'https://your-backend-service/api/tasks';
 
-export const createTask = async (task: Omit) => {
+export const createTask = async (task: Omit<Task, 'id'>) => {
   const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -117,7 +115,7 @@ In Java, you might use JSP includes or Thymeleaf fragments. Here, components are
 
 **Handling State Between Pages**
 
-React SPAs don’t have traditional "pages" but rather views rendered by components. State can be managed in parent components and passed down as props. For more complex state, use React Context or a state management library like Redux.
+React SPAs don't have traditional "pages" but rather views rendered by components. State can be managed in parent components and passed down as props. For more complex state, use React Context or a state management library like Redux.
 
 **When to Use Redux (or Similar)**
 
@@ -126,21 +124,21 @@ React SPAs don’t have traditional "pages" but rather views rendered by compone
 - **Large Applications:** When the app grows and state becomes hard to manage with just props and context.
 
 **Comparison to Java**  
-In Java, state is often managed in the session or request scope. In React, it’s managed in the client, either locally or globally.
+In Java, state is often managed in the session or request scope. In React, it's managed in the client, either locally or globally.
 
 ## 7. Testing: Stubbing and Mocking
 
 **Approaches**
 
 - **Stubbing:** Replace real API calls with simple, controlled responses in tests.
-- **Mocking:** Use Jest’s mocking capabilities to replace entire modules or functions.
+- **Mocking:** Use Jest's mocking capabilities to replace entire modules or functions.
 
 **Example: Mocking an API Call**
 
 ```typescript
 // In your test file
 jest.mock('../api/taskService', () => ({
-  searchAllTasks: jest.fn().mockResolvedValue([
+  getAllTasks: jest.fn().mockResolvedValue([
     { id: '1', title: 'Test Task', description: 'Test Description', status: 'pending' }
   ])
 }));
@@ -151,7 +149,7 @@ In Java, you might use Mockito for mocking. In React, Jest provides similar func
 
 ## 8. Best Practices
 
-- **Type Safety:** Use TypeScript for compile-time checks, similar to Java’s strong typing[2].
+- **Type Safety:** Use TypeScript for compile-time checks, similar to Java's strong typing.
 - **Separation of Concerns:** Keep API logic in services, UI in components.
 - **Testing:** Use React Testing Library for integration-style tests, not just unit tests.
 - **Error Handling:** Add error handling for API calls.
@@ -172,7 +170,7 @@ npm install --save-dev jest @testing-library/react @testing-library/jest-dom @ty
 export default {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['/jest.setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 };
 ```
 
@@ -183,7 +181,7 @@ import { render, screen } from '@testing-library/react';
 import App from './App';
 
 test('renders task manager title', () => {
-  render();
+  render(<App />);
   expect(screen.getByText('Task Manager')).toBeInTheDocument();
 });
 ```
@@ -227,13 +225,10 @@ test('renders task manager title', () => {
 - **React:** [Official React Docs](https://react.dev/)
 - **TypeScript:** [Official TypeScript Docs](https://www.typescriptlang.org/)
 - **Create React App:** [Create React App Docs](https://create-react-app.dev/)
-- **Vite:** [Vite Docs](https://vitejs.dev/)
+- **Vite:** [Vite Docs](https://vite.dev/)
 - **React Testing Library:** [React Testing Library Docs](https://testing-library.com/docs/react-testing-library/intro/)
 - **Jest:** [Jest Docs](https://jestjs.io/docs/getting-started)
 
 ## 14. Summary
 
 This tutorial guides you through building a modern, type-safe React application with TypeScript, highlighting key differences from Java development. It covers project setup, component architecture, state management, testing, and best practices, along with a comparison of React frameworks and libraries.
-
-[1] programming.build_tools
-[2] programming.api_development
